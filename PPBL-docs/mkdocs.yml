@@ -1,0 +1,6 @@
+site_name: Plutus Project Based Learning
+site_url: https://example.com/
+nav: 
+    - Home: index.md
+    - About: about.md
+theme: readthedocs

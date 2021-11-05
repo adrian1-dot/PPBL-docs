@@ -2,5 +2,5 @@ site_name: Plutus Project Based Learning
 site_url: https://gimbalabs.com/
 nav: 
     - Home: index.md
-    - About: about.md
+    - Parametrized-Piggy-Bank: about.md
 theme: readthedocs

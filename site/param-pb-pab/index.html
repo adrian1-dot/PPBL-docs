@@ -119,21 +119,30 @@ backend which has been parameterized. By a parametrized script we mean one where
 some value. For today's example we are illustrating this parameterization with a piggybank script like the 
 <a href="https://github.com/input-output-hk/plutus-pioneer-program/blob/main/code/week02/src/Week02/Gift.hs">gift example</a> from
 <a href="https://github.com/input-output-hk/plutus-pioneer-program">plutus pioneer program</a> but where the script holds the value 
-at some address with a parameterised the piggy bank script addresses are parametrized by what we call a bank
-param here is the bank program the bank program is simple it's a new type which in record syntax takes a
-beneficiary which is a public key hash this means there will be a different script address for each public key hash
-the schema is simple with no changes from a non-parametrized script and has three endpoints put empty and inspect put add
-some lovelace value to a script address empty takes your public key hash and if there are adequate funds pays them to
-your wallet address initiating the transaction an inspect takes a public key hash and checks the value at the address for the
+at some address with a parameter.   </p>
+<pre><code>    newtype BankParam = BankParam
+            { beneficiary :: PubKeyHash
+            } deriving Show
+</code></pre>
+<p>The piggy bank script addresses are parametrized by what we call a <code>BankParam</code>. It's a new type which in record syntax takes a
+beneficiary which is a public key hash. This means there will be a different script address for each public key hash.  </p>
+<pre><code>    type ParameterisedPiggyBankSchema =
+                Endpoint "put" PutParams
+            .\/ Endpoint "empty" ()
+            .\/ Endpoint "inspect" PubKeyHash
+</code></pre>
+<p>The schema is with no changes from a non-parametrized script and has three endpoints. <code>put</code> add
+some lovelace value to a script address. <code>empty</code> takes your public key hash and if there are adequate funds pays them to
+your wallet address, initiating the transaction. <code>inspect</code> takes a public key hash and checks the value at the address for the
 script parametrized by that hash the script does not require any datum or redeemer so the bank data
 so in the bank data each are the unit value in order to make the bank param work as a parameter to a script address we need
 to include the make lift template haskell for the type which auto generates the lift instances then in our make validator
-[Music] then in our make validator function we slightly modify this from the prior examples to have a bank param as the
+ then in our make validator function we slightly modify this from the prior examples to have a bank param as the
 first argument the only other value that we're interested in for the make validator function is the script context which
 will tell us if the transaction is signed by the beneficiary and that's the the the fourth argument here
 and you'll see it's a script context so bank param script context the context helps us test things so we test two
 things in our validator whether the transaction is signed by the beneficiary so we'll test that here by using the
-context info and testing if that is this signatory for the beneficiary [Music] bank program and then we're going to test if there's
+context info and testing if that is this signatory for the beneficiary bank program and then we're going to test if there's
 more than a million love lists we test a million love lists just could not have a test but then if anyone
  were emptying their piggy bank and they were still going to have to pay some lovelace as the transaction fee then
 they might be losing money on emptying their piggy bank which we would really not like to have someone do you'll notice that
@@ -146,9 +155,9 @@ the type validator to get this script address for the transaction and we know th
 script this amount of lovelace and then we wait for the confirmation of that transaction and we log out how much was being paid
 to the script address and for the from the put parameters the second function's inspect which doesn't perform any transactions 
 it just finds the script address a given public key hash so we make a bank program for the public key hash and we get the utxos at
-[Music]the script address and we map out and collect the values using the view lens on the on each of those utxos
+the script address and we map out and collect the values using the view lens on the on each of those utxos
 and then we log out what that value was so then the third function which is empty which is where you get all the money
-[Music]takes a unit argument and produces a contract but here we don't care what that value was we only
+takes a unit argument and produces a contract but here we don't care what that value was we only
 care about the your own public key hash so the unit can be sent via json in curl with the opening closed word
 brackets and so the reason it doesn't take any arguments because it already knows your public key hash and therefore
 can construct a bank param for you and then spends the unspent outputs to your wallet you'll see here the lookup
@@ -156,7 +165,7 @@ verifies that the other script that at the other script it spins from your own p
 the bp was created using your own public key and the other script is the validator at that bank param which was created with 
 your public key hash and then these three are attached together in a promise at the end points for with the give prime grab 
 prime and respect which are given those keywords to be used in the schema and now we'll test this out by first we'll run the pab
-well first we'll build it [Music] and because i built it already this is going to be pretty fast but if you're this is
+well first we'll build it and because i built it already this is going to be pretty fast but if you're this is
 the first time you're building it it might take a while and it's ppb because we've changed the the name of the executable to ppb 
  but it could still be some plutus dash daughter-bab if you're starting from the starter and you don't want to change
 that name but you'll see here we're also compiling our contract parameterized piggy bank from the source plutus contracts
@@ -185,61 +194,11 @@ back at the terminal when we end the pap you get the final balances and you'll s
 million you would take the or take the lovelace transaction fees added to their balance and you'll see one two otherwallets that had about a million
  lovelies taken off and so that's the end of the parametrized piggy bank demo i will also include the url for our github repository that thank
 you very much</p>
-<pre><code>{-# LANGUAGE DataKinds                     #-}
-{-# LANGUAGE DeriveAnyClass                #-}
-{-# LANGUAGE DeriveGeneric                 #-}
-{-# LANGUAGE FlexibleContexts              #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving    #-}
-{-# LANGUAGE MultiParamTypeClasses         #-}
-{-# LANGUAGE NoImplicitPrelude             #-}
-{-# LANGUAGE OverloadedStrings             #-}
-{-# LANGUAGE ScopedTypeVariables           #-}
-{-# LANGUAGE TemplateHaskell               #-}
-{-# LANGUAGE TypeApplications              #-}
-{-# LANGUAGE TypeFamilies                  #-}
-{-# LANGUAGE TypeOperators                 #-}
-{-# OPTIONS_GHC -fno-warn-unused-imports   #-}
-{-# OPTIONS_GHC -fno-warn-unused-top-binds #-}
-
-module Plutus.Contracts.ParameterisedPiggyBank where
-
-import           Control.Lens         (view)
-import           Control.Monad        hiding (fmap)
-import           Data.Aeson           (ToJSON, FromJSON)
-import           Data.Map             as Map hiding (empty)
-import           Data.Text            (Text, unpack, pack)
-import           Data.Monoid          (Last (..))
-import           Data.Void            (Void)
-import           GHC.Generics         (Generic)
-import           Plutus.Contract.Types
-import           PlutusTx             (toBuiltinData)
-import qualified PlutusTx
-import           PlutusTx.Prelude     hiding (Semigroup(..), unless)
-import qualified PlutusTx.Prelude     as Plutus
-import           Ledger               hiding (singleton)
-import           Ledger.Constraints   as Constraints
-import qualified Ledger.Typed.Scripts as Scripts
-import           Ledger.Ada           as Ada
-import           Playground.Contract  (printJson, printSchemas, ensureKnownCurrencies, stage, ToSchema)
-import           Playground.TH        (mkKnownCurrencies, mkSchemaDefinitions)
-import           Playground.Types     (KnownCurrency (..))
-import           Prelude              (IO, Semigroup (..), String, Show (..))
-import           Text.Printf          (printf)
-import           Data.Text.Prettyprint.Doc.Extras (PrettyShow (..))
-import           Plutus.Contract       as Contract
-import           Plutus.V1.Ledger.Value (Value (..), assetClass, assetClassValueOf)
-import qualified Data.Map             as Map
-
--- A value which initates 
-data PutParams = PutParams
+<pre><code>data PutParams = PutParams
     { ppBeneficiary :: !PubKeyHash
     , ppAmount      :: !Integer
     } deriving (Generic, ToJSON, FromJSON, ToSchema, Show)
 
--- A beneficiary gets their own script address
-newtype BankParam = BankParam
-    { beneficiary :: PubKeyHash
-    } deriving Show
 
 -- Endpoints of schema
 type ParameterisedPiggyBankSchema =

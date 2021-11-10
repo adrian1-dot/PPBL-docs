@@ -1,9 +1,10 @@
-#Parametrized Piggy Bank 
-
+ 
+#Overview
 ---
 - [original github repository](https://github.com/eselkin/param-pb-pab)  
 - [video documentation](https://www.youtube.com/watch?v=yeZE5MAjFTI)
 ---
+
 
 We're going to talk about a smart contract for the plutus application backend which has been parameterized. 
 By a parametrized script we mean one where the script address is parametrized by
@@ -11,7 +12,7 @@ some value. For this example we are illustrating the parameterization with a pig
 [gift example](https://github.com/input-output-hk/plutus-pioneer-program/blob/main/code/week02/src/Week02/Gift.hs) from
 [plutus pioneer program](https://github.com/input-output-hk/plutus-pioneer-program) but where the script holds the value 
 at some address with a parameter.   
-
+#On chain
         newtype BankParam = BankParam
                 { beneficiary :: PubKeyHash
                 } deriving Show
@@ -97,7 +98,7 @@ You'll notice that the script address `(scrAddress)` takes a `BankParam` because
 is being lifted by the `PlutusTx.liftCode` and applied to the compiled plutus tx
 make validator script.
 
-
+#Off chain
 ##Endpoints
 Now let's talk about the contract endpoints. These contract functions are `put`, `inspect` and `empty` like we
 saw in the schema before. 
@@ -192,7 +193,7 @@ These three are attached together in a promise at the `endpoints` for with the `
 and `inspect'` which are given those keywords to be used in the schema. 
 
 
-##Testing
+#Testing
 Now we'll test this by using the [plutus-starter](https://github.com/input-output-hk/plutus-starter). 
 First we'll build it by typing `cabal exec -- ppb` in the terminal. This might take a while if it is the first time you build it. 
 The PAB is running on port 9080. We are using [postman](https://www.postman.com/) (you have to download the desktop agent) to test this but you can also use curl.

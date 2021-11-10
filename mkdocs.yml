@@ -4,8 +4,9 @@ nav:
     - Home: index.md
     - Gift: gift.md
     - Parametrised-Piggy-Bank: param-pb-pab.md
-    - Minting NFTs: mintingNFTs.md
+    - Simple-NFT-Minter: simple-nft-minter.md
     - NFT based Authentication: auth.md
     - Wallet probe: walletprobe.md
     - Loyalty tokens: loyaltytokens.md
+
 theme: readthedocs

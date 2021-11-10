@@ -1,13 +1,18 @@
 site_name: Plutus Project Based Learning
 site_url: https://gimbalabs.com/
 nav: 
-    - Introduction: index.md
-    - Set up: setup.md
-    - Gift: gift.md
-    - Parametrised-Piggy-Bank: param-pb-pab.md
-    - Simple-NFT-Minter: simple-nft-minter.md
-    - NFT based Authentication: auth.md
-    - Wallet probe: walletprobe.md
-    - Loyalty tokens: loyaltytokens.md
+    - Getting started:
+        - Introduction: index.md
+        - Set up: setup.md
+    - Projects:
+        - Gift: projects/gift.md
+        - Parametrised-Piggy-Bank: projects/param-pb-pab.md
+        - Simple-NFT-Minter: projects/simple-nft-minter.md
+        - NFT based Authentication: projects/auth.md
+        - Wallet probe: projects/walletprobe.md
+        - Loyalty tokens: projectsprojects/loyaltytokens.md
+    - Useful:
+        - Debugging: debugging.md
+        - Testing: testing.md
 
 theme: readthedocs

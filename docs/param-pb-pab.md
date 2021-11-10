@@ -1,12 +1,21 @@
  
 #Overview
+
+This is a use case for a piggy bank, built upon two kids Jack and Jill who have their own piggy
+banks. Dad and Mom can put money in either of their piggy banks. Jack and Jill can withdraw.
+Here we use the names as the parameters whereas in practice it will be the public key hash.
+Additionally, the piggy bank allows emptying only when lovelace > 1M is accumulated.
+This smart contract demonstrates use of parameterization in Plutus contracts. The validator
+scripts of the piggy banks are parameterized by the name of the beneficiary. 
+
+
+
 ---
 - [original github repository](https://github.com/eselkin/param-pb-pab)  
 - [video documentation](https://www.youtube.com/watch?v=yeZE5MAjFTI)
 ---
 
 
-We're going to talk about a smart contract for the plutus application backend which has been parameterized. 
 By a parametrized script we mean one where the script address is parametrized by
 some value. For this example we are illustrating the parameterization with a piggybank script like the 
 [gift example](https://github.com/input-output-hk/plutus-pioneer-program/blob/main/code/week02/src/Week02/Gift.hs) from
@@ -44,7 +53,7 @@ The script does not require any datum or redeemer. In the `data Bank` each are t
 In order to make the bank param work as a parameter to a script address we need
 to include the make lift template haskell for the type which auto generates the lift instances. 
 
-##Validator
+###Validator
 
         {-# INLINABLE mkValidator #-}
         mkValidator :: BankParam -> () -> () -> ScriptContext -> Bool
@@ -99,7 +108,7 @@ is being lifted by the `PlutusTx.liftCode` and applied to the compiled plutus tx
 make validator script.
 
 #Off chain
-##Endpoints
+###Endpoints
 Now let's talk about the contract endpoints. These contract functions are `put`, `inspect` and `empty` like we
 saw in the schema before. 
 

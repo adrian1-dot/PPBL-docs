@@ -1,7 +1,8 @@
 site_name: Plutus Project Based Learning
 site_url: https://gimbalabs.com/
 nav: 
-    - Home: index.md
+    - Introduction: index.md
+    - Set up: setup.md
     - Gift: gift.md
     - Parametrised-Piggy-Bank: param-pb-pab.md
     - Simple-NFT-Minter: simple-nft-minter.md

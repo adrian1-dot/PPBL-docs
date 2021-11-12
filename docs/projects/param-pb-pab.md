@@ -3,7 +3,7 @@
 
 This is a use case for a piggy bank, built upon two kids Jack and Jill who have their own piggy
 banks. Dad and Mom can put money in either of their piggy banks. Jack and Jill can withdraw.
-Here we use the names as the parameters whereas in practice it will be the public key hash.
+Here we use the names as the parameters, whereas in practice it will be the public key hash.
 Additionally, the piggy bank allows emptying only when lovelace > 1M is accumulated.
 This smart contract demonstrates use of parameterization in Plutus contracts. The validator
 scripts of the piggy banks are parameterized by the name of the beneficiary. 
@@ -103,7 +103,7 @@ they might be losing money on emptying their piggy bank which makes not much sen
 
 
 
-You'll notice that the script address `(scrAddress)` takes a `BankParam` because the `validator` takes also one. The bank param `p` in the `typedValidator` 
+You'll notice that the script address `(scrAddress)` takes a `BankParam` because the `validator` also takes one. The bank param `p` in the `typedValidator` 
 is being lifted by the `PlutusTx.liftCode` and applied to the compiled plutus tx
 make validator script.
 
@@ -210,15 +210,21 @@ The PAB is running on port 9080. We are using [postman](https://www.postman.com/
 
 Import the [postman_collection.json](https://github.com/eselkin/param-pb-pab/blob/main/Parameterised%20Piggy%20Bank.postman_collection.json) 
 file to your collection.
+
+![should look like](../img/postmancollection.png)
+
 First of all we need two values whenever we create a wallet we need both the id which you could normally get from jq with one
-value but we're also going to need the public key hash and so it's much easier to do that with the tests for postman but you could just as easily
+value, but we're also going to need the public key hash and so it's much easier to do that with the tests for postman but you could just as easily
 make an array that gets returned from the jq and store those in the array environment variable but it's up to you how you want to do that. 
 
 
 
-Now we will create wallets, three in total. Therefore we use the **Create WALLET** files in the folder on the left side, choose one and click on **send** (right upper corner).
-Then we're going to create an instance for the contract, as before for every wallet. Using the first instance we're gonna put at the endpoint (use file **put from Wallet_1**). 
-Put using the public key hash for wallet three and we're going to be putting one million lovelace there and you'll see we get the unit `()` output
+Now we will create wallets, three in total. Therefore, we use the **Create WALLET** files in the folder on the left side, choose one and click on **send** (right upper corner).
+Then we're going to create an instance for the contract, as before, for every wallet. Using the first instance we're gonna put at the endpoint (use file **put from Wallet_1**). 
+Put using the public key hash for wallet three and we're going to be putting one million lovelace there and you'll see we get the unit `[]` output.
+
+![unit type](../img/postmanunit.png)
+
 Next we do the same again but with instance 2 again to wallet 3's public key hash and then wallet 2 instance is going to inspect using the inspect endpoint
  what's at the script address for the public key hash for wallet three and you'll notice it just shows the unit type. 
 
@@ -226,13 +232,17 @@ What we need to do is go back into the logs (terminal) and in the logs first you
 two puts, the first put with one million to the script address that is parametrized by that public key
 hash and then wallet 2 also put a million at the same script address because the script address is the same from either places but
 the wallet addresses are not the same as those addresses we're not paying directly to the wallet we're paying to the script address 
-and you'll see, we inspected from wallet 2. The script address has now 2 million lovelace. 
-What we now need to do is using, from instance three which is the instance for wallet three we need to run
-the empty endpoint. It emptied the piggy bank for wallet 3, what it has done is initiating the transaction to pay to wallet three the unspent outputs at the script address 
+and you'll see, we inspected from wallet 2. 
 
-Back at the terminal we end the pab and you get the final balances and you'll see one wallet has two million or a little under 2
-million you would take the lovelace transaction fees added to their balance and you'll see two otherwallets that had about a million
+![inspect](../img/postmaninspect.png)
+
+The script address has now 2 million lovelace. 
+What we now need to do is using the empty endpoint from instance 3 which is the instance for wallet three. It emptied the piggy bank for wallet 3, 
+what it has done is initiating the transaction to pay to wallet three the unspent outputs at the script address 
+
+Back at the terminal we end the pab, and you get the final balances and you'll see one wallet has two million or a little under 2
+million you would take the lovelace transaction fees added to their balance and you'll see two other wallets that had about a million
 lovelace taken off.
 
-Thanks to [eli](https://github.com/eselkin) who provided this example.
+Thanks to [Eli](https://github.com/eselkin) who provided this example.
 

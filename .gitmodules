@@ -1,0 +1,24 @@
+[submodule "code/GiftContract-109"]
+	path = code/GiftContract-109
+	url = https://github.com/manonthemat/GiftContract-109
+[submodule "code/param-pb-pab"]
+	path = code/param-pb-pab
+	url = https://github.com/eselkin/param-pb-pab
+[submodule "simple-nft-minter"]
+	path = simple-nft-minter
+	url = https://github.com/SamJeffrey8/simple-nft-minter
+[submodule "simple-nft-minter-site"]
+	path = simple-nft-minter-site
+	url = https://github.com/SamJeffrey8/simple-nft-minter-site
+[submodule "code/OAuth-NFT"]
+	path = code/OAuth-NFT
+	url = https://github.com/ganeshnithyanandam/OAuth-NFT
+[submodule "code/wallet-probe"]
+	path = code/wallet-probe
+	url = https://github.com/eselkin/wallet-probe
+[submodule "code/loyalty-tokens"]
+	path = code/loyalty-tokens
+	url = https://github.com/ganeshnithyanandam/loyalty-tokens
+[submodule "code/ecrow-contract"]
+	path = code/ecrow-contract
+	url = https://github.com/SamJeffrey8/ecrow-contract

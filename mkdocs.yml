@@ -5,14 +5,15 @@ nav:
         - Introduction: index.md
         - Set up: setup.md
     - Projects:
-        - Gift: projects/gift.md
+        - Gift contract: projects/gift.md
         - Parametrized-Piggy-Bank: projects/param-pb-pab.md
         - Simple-NFT-Minter: projects/simple-nft-minter.md
         - NFT based Authentication: projects/auth.md
         - Wallet probe: projects/walletprobe.md
-        - Loyalty tokens: projectsprojects/loyaltytokens.md
+        - Loyalty tokens: projects/loyaltytokens.md
+        - Applied Escrow: projects/appliedEscrow.md
     - Useful:
-        - Debugging: debugging.md
-        - Testing: testing.md
+        - Interacting with the Blockchain: useful/interacting.md
+
 
 theme: readthedocs

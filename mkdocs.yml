@@ -14,6 +14,6 @@ nav:
         - Applied Escrow: projects/appliedEscrow.md
     - Useful:
         - Interacting with the Blockchain: useful/interacting.md
-
+        - Additional links: useful/links.md
 
 theme: readthedocs

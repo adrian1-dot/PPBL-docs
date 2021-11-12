@@ -5,10 +5,10 @@
 	path = code/param-pb-pab
 	url = https://github.com/eselkin/param-pb-pab
 [submodule "simple-nft-minter"]
-	path = simple-nft-minter
+	path = code/simple-nft-minter
 	url = https://github.com/SamJeffrey8/simple-nft-minter
 [submodule "simple-nft-minter-site"]
-	path = simple-nft-minter-site
+	path = code/simple-nft-minter-site
 	url = https://github.com/SamJeffrey8/simple-nft-minter-site
 [submodule "code/OAuth-NFT"]
 	path = code/OAuth-NFT
